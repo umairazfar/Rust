@@ -8,12 +8,12 @@ use std::vec::Vec;
 fn main() {
     let mut rand = rand::thread_rng();
     
-    const LEN:usize = 20;
+    const LEN:usize = 10;
 
     let mut arr:[i32;LEN] = [0;LEN];
     for i in 0..LEN 
     { 
-        arr[i] = rand.gen_range(0..10);
+        arr[i] = rand.gen_range(0..20);
     }
 
     println!("a:{:?}", arr); 
@@ -76,7 +76,7 @@ fn main() {
         { 
             if curr > 0
             {
-                arr[i as usize] = j;//(j).try_into().unwrap();
+                arr[i as usize] = j + min;//(j).try_into().unwrap();
                 curr-=1;
                 i+=1;
             }
