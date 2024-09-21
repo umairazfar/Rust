@@ -7,7 +7,7 @@ fn main() {
     txt += &modern_cv_style("classic");
     txt += &modern_cv_color("blue");
     txt += &add_user_packages("ModernCV");
-    txt += &add_personal_info("firstname", "familyname", "address", "phone", "email@email.com", "http://www.homepage.com", "homepage_text_to_show");
+    txt += &add_personal_info("firstname", "familyname", "address", "phone", "email@email.com", "http://www.homepage.com"); //be wary of mathematical symblos
     //////////////////////////////////////////////////////////
     //Beginning Document
     //////////////////////////////////////////////////////////
@@ -18,6 +18,7 @@ fn main() {
     //////////////////////////////////////////////////////////
     txt += &define_education_section();
     txt += &define_work_experience_section();
+    txt += &define_publications_section();
 
 
     //////////////////////////////////////////////////////////
@@ -41,7 +42,7 @@ fn main() {
 
 fn document_class_tag(font_size:u32, paper_type:&str, font_family:&str) -> String {
     
-    let txt = format!("{}[{}, {}, {}]", "\\documentclass", font_size, paper_type, font_family);
+    let txt = format!("{}[{}, {}, {}]{}", "\\documentclass", font_size, paper_type, font_family, "{moderncv}");
     return txt;
 }
 
@@ -51,7 +52,7 @@ fn document_class_tag(font_size:u32, paper_type:&str, font_family:&str) -> Strin
 * returns: String*/
 
 fn modern_cv_style(style:&str) -> String {
-    let txt = format!("{}[{}]", "\n\n\\moderncvstyle", style);
+    let txt = format!("{}{{{}}}", "\n\n\\moderncvstyle", style);
     return txt;
 }
 
@@ -61,7 +62,7 @@ fn modern_cv_style(style:&str) -> String {
 * returns: String*/
 
 fn modern_cv_color(color:&str) -> String {
-    let txt = format!("{}[{}]", "\n\\moderncvcolor", color);
+    let txt = format!("{}{{{}}}", "\n\\moderncvcolor", color);
     return txt;
 }
 
@@ -74,7 +75,7 @@ fn add_user_packages(template:&str) -> String {
     let mut txt:String = String::from("");
     if template == "moderncv" {
         txt += "\n\n\\usepackage[scale=.85]{geometry}";
-        txt += "\n\\usepackage{hyperref}";
+        //txt += "\n\\usepackage{hyperref}";//we need to get it to work
     }
     return txt;
 }
@@ -88,15 +89,15 @@ fn add_user_packages(template:&str) -> String {
  * homepage
 */
 
-fn add_personal_info(first_name:&str, family_name:&str, address:&str, mobile:&str, email:&str, homepage:&str, url_text_to_show:&str) ->String{
+fn add_personal_info(first_name:&str, family_name:&str, address:&str, mobile:&str, email:&str, homepage:&str) ->String{
     let mut _txt = String::from("");
     if homepage == ""{
         _txt = format!("\n\n\\firstname{{{}}}\n\\familyname{{{}}}\n\\address{{{}}}\n\\mobile{{{}}}\n\\email{{{}}}",
         first_name, family_name, address, mobile, email);
     }
     else{
-        _txt = format!("\n\n\\firstname{{{}}}\n\\familyname{{{}}}\n\\address{{{}}}\n\\mobile{{{}}}\n\\email{{{}}}\n\\homepage{{{}}}{{{}}}", 
-        first_name, family_name, address, mobile, email, homepage, url_text_to_show);
+        _txt = format!("\n\n\\firstname{{{}}}\n\\familyname{{{}}}\n\\address{{{}}}\n\\mobile{{{}}}\n\\email{{{}}}\n\\homepage{{{}}}", 
+        first_name, family_name, address, mobile, email, homepage);
     }
     return _txt;
 }
@@ -140,7 +141,7 @@ fn define_education_section() -> String{
     let mut txt:String = String::from("\n\\vspace{-1mm}");
     txt+= &format!("\n\n\\section{{{}}}", "Education");
     for education_info in all_education.iter() {
-        txt += &format!("\n\\cventry{{{}--{}}}{{{}, {}, {}}}{{{}}}{{}}",
+        txt += &format!("\n\\cventry{{{}--{}}}{{{}, {}, {}}}{{{}}}{{}}{{}}{{}}",
         education_info.start_date, education_info.end_date, education_info.institution, 
         education_info.city, education_info.country, education_info.qualification,);
         txt += "\n{\\textit{";
@@ -231,16 +232,18 @@ fn define_publications_section() -> String{
 
     //temperory data to be removed later, this data would already be in the publications_done vector
     add_publication(&mut publications_done, "Publication 1", "https://www.google.com");
-    add_publication(&mut publications_done, "Publication 1", "https://www.cnn.com");
-    add_publication(&mut publications_done, "Publication 1", "https://www.bbc.com");
+    add_publication(&mut publications_done, "Publication 2", "https://www.cnn.com");
+    add_publication(&mut publications_done, "Publication 3", "https://www.bbc.com");
 
     let mut txt:String = String::from("\n\\vspace{-3mm}");
     txt+= &format!("\n\n\\section{{{}}}", "Publications");
 
-    let mut i:i32 = 0;
+    let mut i:i32 = 1;
 
     for publication in publications_done.iter() {
-        txt += &format!("{}{}.{}{}", "\\cventry{",i,"}{\\textnormal{", publication);
+        txt += &format!("{}", "\n\\vspace{1mm}");
+        txt += &format!("{}{}.{}{}", "\n\\cventry{", &i.to_string(), "}{\\textnormal{", publication);
+        i+=1;
     }
     return txt;
 }
