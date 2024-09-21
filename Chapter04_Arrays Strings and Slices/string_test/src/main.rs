@@ -19,6 +19,9 @@ fn main() {
     txt += &define_education_section();
     txt += &define_work_experience_section();
     txt += &define_publications_section();
+    txt += &define_extracurriculars_section();
+    txt += &define_technical_section();
+    txt += &define_communications_section();
 
 
     //////////////////////////////////////////////////////////
@@ -227,6 +230,8 @@ fn add_publication(publications_done:&mut Vec<String>, task:&str, url:&str){
     publications_done.push(txt);
 }
 
+/** Defines the publications section in LaTeX */
+
 fn define_publications_section() -> String{
     let mut publications_done: Vec<String> = Vec::new();
 
@@ -243,6 +248,104 @@ fn define_publications_section() -> String{
     for publication in publications_done.iter() {
         txt += &format!("{}", "\n\\vspace{1mm}");
         txt += &format!("{}{}.{}{}", "\n\\cventry{", &i.to_string(), "}{\\textnormal{", publication);
+        i+=1;
+    }
+    return txt;
+}
+
+/** Adds extracurricular activity entry*/
+fn add_extracurricular_activity(extracurriculars_done:&mut Vec<String>, task:&str, url:&str){
+    let mut txt:String = String::from(task);
+    if url != ""{
+        txt += &format!("{}", "\\url{"); 
+        txt += &format!("{}", url);
+        txt += &format!("{}", "}");
+    }
+    txt += &format!("{}", "}}{}{}{}{}");
+    extracurriculars_done.push(txt);
+}
+
+/** Defines the extracurriculars section in LaTeX by using the vector values*/
+fn define_extracurriculars_section() -> String{
+    let mut extracurriculars_done: Vec<String> = Vec::new();
+
+    //temperory data to be removed later, this data would already be in the extracurriculars_done vector
+    add_extracurricular_activity(&mut extracurriculars_done, "Activity 1", "https://www.google.com");
+    add_extracurricular_activity(&mut extracurriculars_done, "Activity 2", "");
+    add_extracurricular_activity(&mut extracurriculars_done, "Activity 3", "https://www.bbc.com");
+
+    let mut txt:String = String::from("\n\\vspace{-3mm}");
+    txt+= &format!("\n\n\\section{{{}}}", "Extracurriculars");
+
+    let mut i:i32 = 1;
+
+    for extracurricular in extracurriculars_done.iter() {
+        txt += &format!("{}", "\n\\vspace{1mm}");
+        txt += &format!("{}{}.{}{}", "\n\\cventry{", &i.to_string(), "}{\\textnormal{", extracurricular);
+        i+=1;
+    }
+    return txt;
+}
+
+fn add_technical_item(item_done:&mut Vec<String>, task:&str, url:&str){
+    let mut txt:String = String::from(task);
+    if url != ""{
+        txt += &format!("{}", "\\url{"); 
+        txt += &format!("{}", url);
+        txt += &format!("{}", "}");
+    }
+    txt += &format!("{}", "}}{}{}{}{}");
+    item_done.push(txt);
+}
+
+fn define_technical_section() -> String{
+    let mut items_done: Vec<String> = Vec::new();
+
+    //temperory data to be removed later, this data would already be in the items_done vector
+    add_technical_item(&mut items_done, "Item 1", "https://www.google.com");
+    add_technical_item(&mut items_done, "Item 2", "");
+    add_technical_item(&mut items_done, "Item 3", "https://www.bbc.com");
+
+    let mut txt:String = String::from("\n\\vspace{-3mm}");
+    txt+= &format!("\n\n\\section{{{}}}", "Technical Skills");
+
+    let mut i:i32 = 1;
+
+    for item in items_done.iter() {
+        txt += &format!("{}", "\n\\vspace{1mm}");
+        txt += &format!("{}{}.{}{}", "\n\\cventry{", &i.to_string(), "}{\\textnormal{", item);
+        i+=1;
+    }
+    return txt;
+}
+
+fn add_communication_item(item_done:&mut Vec<String>, task:&str, url:&str){
+    let mut txt:String = String::from(task);
+    if url != ""{
+        txt += &format!("{}", "\\url{"); 
+        txt += &format!("{}", url);
+        txt += &format!("{}", "}");
+    }
+    txt += &format!("{}", "}}{}{}{}{}");
+    item_done.push(txt);
+}
+
+fn define_communications_section() -> String{
+    let mut items_done: Vec<String> = Vec::new();
+
+    //temperory data to be removed later, this data would already be in the items_done vector
+    add_communication_item(&mut items_done, "Item 1", "https://www.google.com");
+    add_communication_item(&mut items_done, "Item 2", "");
+    add_communication_item(&mut items_done, "Item 3", "https://www.bbc.com");
+
+    let mut txt:String = String::from("\n\\vspace{-3mm}");
+    txt+= &format!("\n\n\\section{{{}}}", "Communication Skills \\& Language Proficiency");
+
+    let mut i:i32 = 1;
+
+    for item in items_done.iter() {
+        txt += &format!("{}", "\n\\vspace{1mm}");
+        txt += &format!("{}{}.{}{}", "\n\\cventry{", &i.to_string(), "}{\\textnormal{", item);
         i+=1;
     }
     return txt;
